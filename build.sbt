@@ -13,7 +13,10 @@ libraryDependencies ++= Seq(
 )
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.4"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.4" % "test"
+libraryDependencies += "org.scala-lang" % "scala-library-all" % "2.12.4"
+libraryDependencies += "org.scala-lang" % "scala-swing" % "2.10+"
 
 addSbtPlugin("com.artima.supersafe" % "sbtplugin" % "1.1.2")
 
-mainClass in (Compile, run) := Some("de.axelknauf.birdswarm.helloworld.Main")
+mainClass in (Compile, run) := Some("de.axelknauf.birdswarm.ui.BirdSwarmUI")
+
