@@ -1,3 +1,19 @@
 package de.axelknauf.birdswarm.ui
 
-case class Bird(val x: Int, val y: Int, val color: java.awt.Color, val size: Int)
+import akka.actor._
+import akka.event.Logging
+
+class Bird(val x: Int, val y: Int) extends Actor {
+
+  val log = Logging(context.system, this)
+
+  def receive = {
+    case _ => log.info("reveived message")
+  }
+}
+
+object Bird {
+
+  def props(x: Int, y: Int): Props = Props(classOf[Bird], x, y)
+  
+}

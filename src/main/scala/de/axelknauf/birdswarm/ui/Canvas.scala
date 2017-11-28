@@ -1,26 +1,24 @@
 package de.axelknauf.birdswarm.ui
 
+import scala.collection.mutable
 import scala.swing.Panel
 import java.awt.{ Graphics2D, Color }
 
 class Canvas extends Panel {
-  var centerColor = Color.yellow
-  
-  var birds = List[Bird]()
+
+  val birdSize = 20
+
+  var swarm = mutable.Map[String, (Int, Int)]()
 
   override def paintComponent(g: Graphics2D) {
     g.clearRect(0, 0, size.width, size.height)
-    
-    // Draw things that change on top of background
-   for (bird <- birds) {
-     g.setColor(bird.color)
-     g.fillOval(bird.x, bird.y, bird.size, bird.size)
-   }
+    for (pos <- swarm.values) {
+      g.fillOval(pos._1, pos._2, birdSize, birdSize)
+    }
   }
 
-  /** Add a "bird" to list of things to display */
-  def addBird(bird: Bird) {
-    birds = birds :+ bird
+  def setPositions(newPositions: mutable.Map[String, (Int, Int)]) {
+    swarm = newPositions
     repaint()
   }
 }
