@@ -21,7 +21,7 @@ object Main extends App {
 
 
   val system = ActorSystem("birdswarm")
-  val mainLoop = system.actorOf(MainLoop.props())
+  val mainLoop = system.actorOf(MainLoop.props(), "mainLoop")
 
   Thread.sleep(500)
   mainLoop ! Start
@@ -64,7 +64,7 @@ class MainLoop extends Actor with Timers {
     // PROCESSING ----------------------------------------
     case NewBird(x, y) => {
       log.info(s"Creating new bird at ${x}, ${y}")
-      birds.add(system.actorOf(Bird.props(x, y)))
+      birds.add(system.actorOf(Bird.props(x, y), s"Bird-${birds.size}"))
     }
     case Position(x, y) => log.info(s"Bird ${sender()} is at position: ${x}, ${y}.")
     case Tick => {
