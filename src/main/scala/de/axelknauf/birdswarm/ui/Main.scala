@@ -19,7 +19,6 @@ case class Position(x: Int, y: Int) extends Message
 
 object Main extends App {
 
-
   val system = ActorSystem("birdswarm")
   val mainLoop = system.actorOf(MainLoop.props(), "mainLoop")
 
@@ -64,7 +63,7 @@ class MainLoop extends Actor with Timers {
     // PROCESSING ----------------------------------------
     case NewBird(x, y) => {
       log.info(s"Creating new bird at ${x}, ${y}")
-      birds.add(system.actorOf(Bird.props(x, y), s"Bird-${birds.size}"))
+      birds.add(system.actorOf(Bird.props(x, y, (4, 4)), s"Bird-${birds.size}"))
     }
     case Position(x, y) => log.info(s"Bird ${sender()} is at position: ${x}, ${y}.")
     case Tick => {
@@ -79,7 +78,7 @@ object MainLoop {
   def props(): Props = Props(classOf[MainLoop])
 }
 
-class Bird(var x: Int, var y: Int) extends Actor {
+class Bird(var x: Int, var y: Int, val vector: (Int, Int)) extends Actor {
 
   val log = Logging(context.system, this)
 
@@ -91,10 +90,11 @@ class Bird(var x: Int, var y: Int) extends Actor {
   }
 
   def calcNewPosition() {
-    log.info("Calculating new position (NOOP).")
+    x += vector._1
+    y += vector._2
   }
 }
 
 object Bird {
-  def props(x: Int, y: Int): Props = Props(classOf[Bird], x, y)
+  def props(x: Int, y: Int, vector: (Int, Int)): Props = Props(classOf[Bird], x, y, vector)
 }
