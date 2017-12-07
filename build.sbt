@@ -18,5 +18,5 @@ libraryDependencies += "org.scala-lang" % "scala-swing" % "2.10+"
 
 addSbtPlugin("com.artima.supersafe" % "sbtplugin" % "1.1.2")
 
-mainClass in (Compile, run) := Some("de.axelknauf.birdswarm.ui.Main")
+mainClass in (Compile, run) := Some("de.axelknauf.birdswarm.ui.BirdSwarmUI")
 
