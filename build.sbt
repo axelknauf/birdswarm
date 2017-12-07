@@ -18,5 +18,9 @@ libraryDependencies += "org.scala-lang" % "scala-swing" % "2.10+"
 
 addSbtPlugin("com.artima.supersafe" % "sbtplugin" % "1.1.2")
 
+fork := true
+// TODO scale UI on high dpi displays
+// javaOptions in run := Seq("-Dsun.java2d.dpiaware=true")
+
 mainClass in (Compile, run) := Some("de.axelknauf.birdswarm.ui.BirdSwarmUI")
 

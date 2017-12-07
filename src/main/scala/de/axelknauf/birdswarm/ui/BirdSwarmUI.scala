@@ -11,6 +11,7 @@ import scala.swing._
 import scala.swing.event._
 import scala.swing.BorderPanel.Position._
 
+// TODO scale UI on high dpi displays
 object BirdSwarmUI extends SimpleSwingApplication {
 
   val canvas = new Canvas { preferredSize = new Dimension(800, 600) }
@@ -51,7 +52,6 @@ object BirdSwarmUI extends SimpleSwingApplication {
   override def shutdown() {
     // TODO fix shutting down, does not work currently
     system.terminate()
-    System.exit(0)
   }
 
 }
