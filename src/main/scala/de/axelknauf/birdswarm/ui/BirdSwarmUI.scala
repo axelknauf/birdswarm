@@ -50,7 +50,6 @@ object BirdSwarmUI extends SimpleSwingApplication {
   }
 
   override def shutdown() {
-    // TODO fix shutting down, does not work currently
     system.terminate()
   }
 
