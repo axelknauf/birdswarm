@@ -1,5 +1,6 @@
 package de.axelknauf.birdswarm.actors
 
+import de.axelknauf.birdswarm.ui._
 import de.axelknauf.birdswarm.actors.Message._
 import de.axelknauf.birdswarm._
 
@@ -9,22 +10,21 @@ import akka.event.Logging
 import language.postfixOps
 import scala.collection.mutable
 
-class MainLoop extends Actor with Timers {
+class MainLoop(val canvas: Canvas) extends Actor with Timers {
 
   import context._
 
   val log = Logging(context.system, this)
+  val tickInterval = 500.millis
+
   var birds: mutable.Set[ActorRef] = mutable.Set()
+  val positions = mutable.Map[String, (Int, Int)]()
 
   def receive = {
     // LIFECYCLE ----------------------------------------
-    case Shutdown => {
-      log.info("Shutting down")
-      context.stop(self)
-    }
     case Start => {
       log.info("Mainloop starting")
-      timers.startPeriodicTimer(Tick, Tick, 500.millis)
+      timers.startPeriodicTimer(Tick, Tick, tickInterval)
     }
     case Stop => {
       log.info("Mainloop stopping")
@@ -37,8 +37,9 @@ class MainLoop extends Actor with Timers {
       birds.add(system.actorOf(Bird.props(x, y, (4, 4)), s"Bird-${birds.size}"))
     }
     case Position(x, y) => {
-      // TODO save position somewhere to make accessible from UI
       log.info(s"Bird ${sender()} is at position: ${x}, ${y}.")
+      positions(sender().path.name) = (x, y)
+      canvas.setPositions(positions)
     }
     case Tick => {
       log.info("Tick!")
@@ -49,5 +50,5 @@ class MainLoop extends Actor with Timers {
 }
 
 object MainLoop {
-  def props(): Props = Props(classOf[MainLoop])
+  def props(canvas: Canvas): Props = Props(classOf[MainLoop], canvas)
 }

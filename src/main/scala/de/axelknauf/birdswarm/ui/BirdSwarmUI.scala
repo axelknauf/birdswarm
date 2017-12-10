@@ -17,7 +17,7 @@ object BirdSwarmUI extends SimpleSwingApplication {
   val canvas = new Canvas { preferredSize = new Dimension(800, 600) }
 
   val system = ActorSystem("birdswarm")
-  val mainLoop = system.actorOf(MainLoop.props(), "mainLoop")
+  val mainLoop = system.actorOf(MainLoop.props(canvas), "mainLoop")
 
   def top = new MainFrame {
     title = "BirdSwarm UI"
